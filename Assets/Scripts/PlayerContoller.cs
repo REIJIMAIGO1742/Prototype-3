@@ -9,6 +9,7 @@ public class PlayerContoller : MonoBehaviour
     public float jumpForce = 10.0f;
     public float gravityModifier;
     public bool isOnGround = true;
+    public bool gameOver = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,6 +32,14 @@ public class PlayerContoller : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        isOnGround = true;
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isOnGround = true;
+        }
+        else if (collision.gameObject.CompareTag("Obstacle"))
+        { 
+            gameOver = true;
+            Debug.Log("GameOver!!");
+        }
     }
 }
