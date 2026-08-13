@@ -7,10 +7,13 @@ public class MoveLeft : MonoBehaviour
     private PlayerContoller playerContollerScript;
 
     private float leftBound = -15;
+
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerContollerScript = GameObject.Find("Player").GetComponent<PlayerContoller>();
+        
     }
 
     // Update is called once per frame
