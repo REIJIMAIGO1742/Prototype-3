@@ -12,11 +12,19 @@ public class PlayerContoller : MonoBehaviour
     public bool isOnGround = true;
     public bool gameOver = false;
 
+    public ParticleSystem explotionPaticle;
+    public ParticleSystem dirtPaticle;
+
+    private AudioSource playAudio;
+    public AudioClip jumpSound;
+    public AudioClip clashSound;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
+        playAudio = GetComponent<AudioSource>();
         jumpAction.Enable();
 
         Physics.gravity *= gravityModifier;
@@ -30,6 +38,10 @@ public class PlayerContoller : MonoBehaviour
         {
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             playerAnim.SetTrigger("Jump_trig");
+            dirtPaticle.Stop();
+
+            playAudio.PlayOneShot(jumpSound,1.0f);
+
             isOnGround = false;
         }
     }
@@ -39,12 +51,18 @@ public class PlayerContoller : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
+            dirtPaticle.Play();
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         { 
             gameOver = true;
             playerAnim.SetBool("Death_b", true);
             playerAnim.SetInteger("DeathType_int", 1);
+            explotionPaticle.Play();
+            dirtPaticle.Stop();
+
+            playAudio.PlayOneShot(clashSound,1.0f);
+
             Debug.Log("GameOver!!");
         }
     }
